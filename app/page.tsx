@@ -1,4 +1,5 @@
 import Accordion from "./components/Accordion";
+import FaqSection from "./components/Faqs";
 import NewsletterFooter from "./components/Footer";
 import HeroSection from "./components/HeroSection";
 import Navbar from "./components/Navbar";
@@ -12,7 +13,8 @@ export default function Home() {
             <Navbar />
           </div>
           <HeroSection />
-          <div className="px-[5%]">
+          <FaqSection />
+          <div className="px-[5%] py-[4%]">
             <NewsletterFooter />
           </div>
         </div>
