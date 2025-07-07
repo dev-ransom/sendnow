@@ -8,7 +8,7 @@ import React from "react";
 const DesktopNav = () => {
     const pathname = usePathname();
   return (
-    <div className="w-full z-10 md:flex gap-4 mt-5 px-[5%] hidden">
+    <div className="w-full z-10 md:flex gap-4 mt-5 px-[5%] fixed hidden">
       <div className="flex justify-between w-full h-[100px] bg-white items-center px-6 rounded-[30px]">
         {/* Logo/Branding */}
         <Link href="/">
@@ -31,8 +31,8 @@ const DesktopNav = () => {
                 href={link.href}
                 className={`transition-colors text-[20px] ${
                   isActive
-                    ? "text-[#000000] font-bold"
-                    : "text-[#000000] hover:text-blue-600 font-medium px-[20px] "
+                    ? "text-[#000000] font-medium hover:font-semibold"
+                    : "text-[#000000] hover:font-semibold px-[20px]"
                 }`}
               >
                 {link.label}

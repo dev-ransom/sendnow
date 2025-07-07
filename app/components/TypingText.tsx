@@ -32,7 +32,7 @@ export const TypingText = ({ phrases }: { phrases: string[] }) => {
   }, [currentText, isDeleting, currentPhraseIndex, phrases, typingSpeed]);
 
   return (
-    <h1 className="text-5xl font-semibold">
+    <h1 className="lg:text-5xl text-[27px] font-semibold">
       Introducing <span className="text-[#18B1FF]">{currentText}</span>
       <span className="ml-1 animate-blink text-[#18B1FF]">|</span>
     </h1>

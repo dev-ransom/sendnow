@@ -17,7 +17,7 @@ const NewsletterFooter = () => {
   };
 
   return (
-    <footer className="bg-linear-[25deg,#ffffff,#c9edff,#ffffff] pb-5 w-full">
+    <footer className="pb-5 w-full">
       <div className="bg-[#171717] text-white py-12 md:px-4 sm:px-6 lg:px-8 rounded-4xl">
         <div className="md:px-8 px-4 md:pt-12 pt-0">
           {/* Newsletter Section */}
@@ -85,7 +85,7 @@ const NewsletterFooter = () => {
               </p>
             </div>
             {footerLinks.map((link) => (
-              <div className="flex-1" key={link.title}>
+              <div className="flex-1 lg:flex hidden" key={link.title}>
                 <h4 className="font-bold mb-4">{link.title}</h4>
                 <ul className="space-y-2">
                   {link.links.map((item) => (

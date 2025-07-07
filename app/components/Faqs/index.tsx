@@ -3,7 +3,7 @@ import Accordion from "../Accordion";
 
 const FaqSection = () => {
   return (
-    <section id="faq-section" className="px-[5%] flex flex-col pb-[4%] h-full">
+    <section id="faq-section" className="px-[5%] flex flex-col pb-[4%] h-full bg-white">
       <div className="px-[6%]">
         <div className="pb-[100px] text-center flex flex-col gap-9 w-[50%] mx-auto relative">
           <img
