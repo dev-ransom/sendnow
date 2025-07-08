@@ -2,19 +2,19 @@
 import { useState } from "react";
 import { ActionButton } from "../Button/ActionButton";
 import { TypingText } from "../TypingText";
+import { useRouter } from "next/navigation";
 
 const HeroSection = () => {
   const [isDownloading, setIsDownloading] = useState(false);
-  const [isGettingStarted, setIsGettingStarted] = useState(false);
 
+  const router = useRouter();
   const handleDownload = () => {
     setIsDownloading(true);
     setTimeout(() => setIsDownloading(false), 2000);
   };
 
-  const handleGetStarted = () => {
-    setIsGettingStarted(true);
-    setTimeout(() => setIsGettingStarted(false), 2000);
+    const handleGetStarted = () => {
+      router.push('/auth/signup')
   };
 
   return (
@@ -46,7 +46,7 @@ const HeroSection = () => {
                 className="w-[150px] h-[65px] cursor-pointer "
                 variant="secondary"
                 childProps="font-light"
-                isLoading={isGettingStarted}
+                isLoading={false}
                 onClick={handleGetStarted}
               >
                 Get Started

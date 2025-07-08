@@ -1,33 +1,15 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-// Define your Helvetica Now Display font
-const helvetica = localFont({
-  src: [
-    {
-      path: "./fonts/HelveticaNowDisplay-Light.woff2",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "./fonts/HelveticaNowDisplay-Light.eot",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/HelveticaNowDisplay-Light.ttf",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "./fonts/HelveticaNowDisplay-Light.woff",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-  variable: "--font-helvetica",
-  display: "swap",
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -41,21 +23,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${helvetica.variable}`}>
-      <head>
-        <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-        <meta
-          name="keywords"
-          content="sendNow, chat, messaging, secure, fast, reliable, instant, private, encrypted, group, one-on-one, video, audio, file, location, status, notification, message, typing, emoji, reaction, sticker, voice, call, video call, text, image, audio, video, document, location, status, notification, message, typing, emoji, reaction, sticker, voice, call, video call, text, image, audio, video, document, location, status, notification, message, typing, emoji, reaction, sticker, voice, call, video call"
-        />
-        <meta
-          name="description"
-          content="sendNow - Introducing Chat – Instant, Secure, Smarter Messaging"
-        />
-        <meta name="themes" content="sendNow" />
-        <link rel="icon" href="/favicon.ico" />
-      </head>
-      <body className="font-sans antialiased">{children}</body>
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {children}
+      </body>
     </html>
   );
 }

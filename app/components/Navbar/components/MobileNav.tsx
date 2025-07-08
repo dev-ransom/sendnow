@@ -5,10 +5,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 const MobileNav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const pathname = usePathname();
   const handleOpenFn = () => {
     setIsMenuOpen(true);
   };
@@ -21,10 +22,17 @@ const MobileNav = () => {
     setIsMenuOpen(false);
   };
 
+  const minimalRoutes = ["/auth/login", "/auth/signup", "/auth/verify-email"];
+
+  const isMinimalRoute = minimalRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+
+
   return (
     <div className="lg:hidden fixed top-0 h-[89px] left-0 right-0 z-10 bg-white shadow-sm">
-      <div className="flex px-[8%] py-3 w-full justify-between items-center">
-        <Link href="/" className="w-[150px] h-[59px]">
+      <div className="flex px-[8%] pt-7 w-full justify-between items-center">
+        <Link href="/" className="w-[120px] h-[59px]">
           <Image
             src="/images/logo.png"
             alt="logo"
@@ -34,6 +42,7 @@ const MobileNav = () => {
             priority
           />
         </Link>
+        {!isMinimalRoute && (
         <Image
           src="/images/menu.png"
           alt="menu"
@@ -42,6 +51,7 @@ const MobileNav = () => {
           className="w-[30px] h-[30px] cursor-pointer"
           onClick={handleOpenFn}
         />
+        )}
       </div>
 
       <AnimatePresence>
