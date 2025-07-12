@@ -17,13 +17,13 @@ const FeatureList = () => {
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
           {/* Content Section */}
           <div className="w-full lg:w-1/2 space-y-8">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
-              Tested. Verified. <br /> Ready.
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl lg:text-left text-center font-bold leading-tight">
+              Tested. Verified. <br className="md:flex hidden"/> Ready.
             </h1>
 
-            <div className="space-y-6">
+            <div className="space-y-6 flex flex-col w-full text-center">
               {features.map((feature, index) => (
-                <div key={index} className="flex gap-3 items-center ">
+                <div key={index} className="flex gap-3 items-center justify-center">
                   <Image
                     src="/images/bitcoin.png"
                     alt="testing"
