@@ -4,7 +4,7 @@ const Header = ({
   text,
   textSize = "lg:text-[24px] text-[20px] ",
   position,
-  textColor = "text-brand-black dark:text-white",
+  textColor = "text-black",
   textClasses,
   font = "font-[600]",
 }: {

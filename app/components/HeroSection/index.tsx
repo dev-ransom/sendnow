@@ -14,7 +14,7 @@ const HeroSection = () => {
   };
 
     const handleGetStarted = () => {
-      router.push('/auth/signup')
+      router.push('/auth/login')
   };
 
   return (

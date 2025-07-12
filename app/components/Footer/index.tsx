@@ -85,7 +85,7 @@ const NewsletterFooter = () => {
               </p>
             </div>
             {footerLinks.map((link) => (
-              <div className="flex-1 lg:flex hidden" key={link.title}>
+              <div className="flex-1 lg:flex hidden flex-col" key={link.title}>
                 <h4 className="font-bold mb-4">{link.title}</h4>
                 <ul className="space-y-2">
                   {link.links.map((item) => (

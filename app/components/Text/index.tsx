@@ -2,7 +2,7 @@ import React from "react";
 
 const Text = ({
   text,
-  textColor = "text-brand-black dark:text-white",
+  textColor = "text-black",
   textSize = "text-[14px] lg:text-[16px]",
   breakText,
   textStyle,

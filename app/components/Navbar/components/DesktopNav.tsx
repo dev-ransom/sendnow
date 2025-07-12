@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import { navLinks } from "@/app/constants";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,11 +7,13 @@ import React from "react";
 
 const DesktopNav = () => {
   const pathname = usePathname();
-  const minimalRoutes = ["/auth/login", "/auth/signup", "/auth/verify-email"];
-
-  const isMinimalRoute = minimalRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+   const minimalRoutes = [
+    '/auth/login',
+    '/auth/signup',
+    '/auth/verify-email'
+  ];
+  
+  const isMinimalRoute = minimalRoutes.some(route => pathname.startsWith(route));
 
   if (isMinimalRoute) {
     return (
@@ -28,7 +30,7 @@ const DesktopNav = () => {
       </div>
     );
   }
-
+  
   return (
     <div className="w-full z-10 md:flex gap-4 mt-5 px-[5%] fixed hidden">
       <div className="flex justify-between w-full h-[100px] bg-white items-center px-6 rounded-[30px]">

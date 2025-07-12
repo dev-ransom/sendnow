@@ -1,26 +1,46 @@
 "use client";
 import { useFormik } from "formik";
-import * as Yup from "yup";
+
+import { useRouter } from "next/navigation";
+import { useSignupMutation } from "../features/auth/authService";
+import { useAppDispatch } from "../store/store";
+import { setIsNewUser, setPhoneNumber } from "../features/auth/authSlice";
+import { signupSchema } from "@/validationSchemas";
 
 const PhoneVerificationForm = () => {
+  const { mutateAsync, isPending } = useSignupMutation();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: {
       countryCode: "+234",
       phoneNumber: "",
     },
-    validationSchema: Yup.object({
-      phoneNumber: Yup.string()
-        .required("Phone number is required")
-        .matches(/^[0-9]+$/, "Must be only digits")
-        .min(10, "Must be at least 10 digits")
-        .max(11, "Must be 11 digits or less"),
-    }),
-    onSubmit: (values) => {
-      const fullPhoneNumber = `${values.countryCode}${values.phoneNumber}`;
-      console.log("Submitting:", fullPhoneNumber);
-      // Handle OTP sending logic here
+    validationSchema: signupSchema,
+    onSubmit: async (values) => {
+      try {
+        const cleanedPhoneNumber = values.phoneNumber
+          .replace(/\D/g, "")
+          .replace(/^0+/, "");
+        if (cleanedPhoneNumber.length !== 10) {
+          throw new Error("Phone number must be 10 digits");
+        }
+        const countryCodeWithoutPlus = values.countryCode.replace("+", "");
+        const fullPhoneNumber = `${countryCodeWithoutPlus}${cleanedPhoneNumber}`;
+        dispatch(setPhoneNumber({ phone: fullPhoneNumber }));
+        const response = await mutateAsync({ phone_number: fullPhoneNumber });
+        dispatch(setIsNewUser(response.new_user));
+        router.push("/auth/verify-email");
+      } catch (error) {}
     },
   });
+
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const digitsOnly = value.replace(/\D/g, "");
+    const withoutLeadingZero = digitsOnly.replace(/^0+/, "");
+    formik.setFieldValue("phoneNumber", withoutLeadingZero);
+  };
 
   return (
     <div className="max-w-md mx-auto p-6">
@@ -45,11 +65,12 @@ const PhoneVerificationForm = () => {
               id="phoneNumber"
               name="phoneNumber"
               type="tel"
-              placeholder="Phone Number"
-              onChange={formik.handleChange}
+              placeholder="8012345678"
+              onChange={handlePhoneNumberChange}
               onBlur={formik.handleBlur}
               value={formik.values.phoneNumber}
               className="flex-1 px-3 py-2 border border-gray-300 rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              maxLength={10}
             />
           </div>
           {formik.touched.phoneNumber && formik.errors.phoneNumber && (
@@ -61,10 +82,10 @@ const PhoneVerificationForm = () => {
 
         <button
           type="submit"
-          disabled={formik.isSubmitting}
+          disabled={formik.isSubmitting || isPending}
           className="w-full bg-[#18B1FF] text-white py-2 px-4 cursor-pointer rounded-md hover:bg-[#18b2ffe1] focus:outline-none focus:ring-2 focus:ring-[#18b2ffe8] focus:ring-offset-2 disabled:opacity-50"
         >
-          Send OTP
+          {isPending ? "Sending..." : "Send OTP"}
         </button>
       </form>
     </div>

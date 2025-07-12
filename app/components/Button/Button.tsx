@@ -44,7 +44,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variantClasses = {
       primary:
-        "bg-base-light dark:bg-base-dark hover:bg-base-light-hover dark:hover:bg-base-dark-hover text-white",
+        "bg-[#18B1FF]  text-white",
       secondary:
         "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white",
       danger: "bg-red-500 hover:bg-red-600 text-white",
