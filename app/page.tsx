@@ -8,7 +8,7 @@ import FeatureList from "./components/Verify";
 
 export default function Home() {
   return (
-    <div className="w-full bg-blue-500 h-full">
+    <div className="w-full bg-linear-[45deg,#ffffff,#c9edff,#ffffff] h-full">
       <div className="w-full">
         <div className="h-full w-full flex flex-col">
           <Navbar />

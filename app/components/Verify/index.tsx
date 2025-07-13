@@ -21,9 +21,9 @@ const FeatureList = () => {
               Tested. Verified. <br className="md:flex hidden"/> Ready.
             </h1>
 
-            <div className="space-y-6 flex flex-col w-full text-center">
+            <div className="space-y-6">
               {features.map((feature, index) => (
-                <div key={index} className="flex gap-3 items-center justify-center">
+                <div key={index} className="flex gap-3 lg:items-start lg:justify-start md:items-center md:justify-center">
                   <Image
                     src="/images/bitcoin.png"
                     alt="testing"
