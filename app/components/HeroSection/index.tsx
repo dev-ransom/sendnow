@@ -18,7 +18,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="pt-[150px] w-full flex flex-col pb-[70px]">
+    <section className="pt-[150px] w-full flex flex-col pb-[70px] bg-linear-[45deg,#ffffff,#c9edff,#ffffff]">
       <div className="flex sm:px-6 lg:px-[5%] px-[8%] justify-between lg:flex-row flex-col">
         <div className="flex-1 px-2 lg:mt-[100px] lg:max-w-[50%] w-full">
           <div className="w-full">

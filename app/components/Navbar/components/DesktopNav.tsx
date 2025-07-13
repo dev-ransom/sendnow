@@ -10,7 +10,8 @@ const DesktopNav = () => {
    const minimalRoutes = [
     '/auth/login',
     '/auth/signup',
-    '/auth/verify-email'
+     '/auth/verify-email',
+    '/auth/chat'
   ];
   
   const isMinimalRoute = minimalRoutes.some(route => pathname.startsWith(route));

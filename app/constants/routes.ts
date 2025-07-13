@@ -16,7 +16,8 @@ export const publicRoutes = [
    * These will redirect authenticated users to the chat
    */
   export const authRoutes = [
-    '/auth/login',           // Phone number input
+    '/auth/login',
+     '/auth/chat',               // Phone number input
     '/auth/verify',          // SMS code verification
     '/auth/register',        // Optional registration after verification
     '/auth/retry',           // Resend SMS code

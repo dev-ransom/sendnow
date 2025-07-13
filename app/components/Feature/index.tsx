@@ -1,9 +1,9 @@
 import Image from "next/image";
 const SendNowFeature = () => {
   return (
-    <section className="w-full h-full  flex flex-col items-center justify-center px-[5%]">
+    <section className="w-full h-full  flex flex-col items-center justify-center px-[5%] bg-linear-[45deg,#c9edff,#ffffff,#c9edff]">
       <div
-        className="flex flex-col items-center relative justify-center w-full h-full py-[4%] rounded-2xl min-h-screen bg-cover bg-center bg-no-repeat bg-white"
+        className="flex flex-col items-center relative justify-center w-full h-full py-[4%] rounded-2xl min-h-screen bg-cover bg-center bg-no-repeat bg-blue-500"
         style={{ backgroundImage: "url(/images/transparentbg.png)" }}
       >
         <div className="flex flex-col items-center relative justify-center w-full h-full">
