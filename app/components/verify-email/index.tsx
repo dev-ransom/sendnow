@@ -80,21 +80,21 @@ const VerifyCode = () => {
 
   return (
     <div className="flex flex-col w-full h-full px-0 lg:pt-0">
-      <div className="w-full text-center relative h-[unset] md:h-full flex flex-col items-center">
-        <div className="text-left flex flex-col gap-4 mb-[30px]">
+      <div className="w-full text-left relative h-[unset] md:h-full flex flex-col ">
+        <div className="text-left flex flex-col lg:items-start items-center gap-4 mb-[30px]">
           <Header text="Verify OTP" textSize="text-[50px] text-nowrap" />
           <p className="text-[#797979]">
             A 4-digit code was sent to +{formattedPhone} <br />
             Didn't get it?{" "}
             <span
-              className={`${"text-[#18B1FF] cursor-pointer"}`}
-              onClick={() => {}}
+              className={`${"text-[#18B1FF] cursor-pointer underline"}`}
+              onClick={() => {} }
             >
               Resend Code <span>30s</span>
             </span>
           </p>
         </div>
-        <div className="lg:w-[100%] w-full flex gap-6 flex-col items-center justify-center text-black">
+        <div className="w-full flex gap-6 flex-col lg:items-start items-center justify-start text-black">
           <OTPInput
             containerStyle="justify-between gap-2"
             value={otp}
@@ -111,12 +111,12 @@ const VerifyCode = () => {
               />
             )}
           />
-          <div className="flex flex-col items-center justify-between w-full gap-4 text-center lg:justify-center my-[10px] mt-2">
+          <div className="flex flex-col lg:items-start items-center justify-between w-full gap-4 text-center lg:justify-center my-[10px] mt-2">
             <Button
               label={isVerifying ? "Verifying..." : "Verify"}
               disabled={!otp || isVerifying}
               loading={isVerifying}
-              width="w-full lg:w-[300px]"
+              width="w-full lg:w-[360px]"
               buttonStyle="custom"
               height="h-[45px]"
               customClasses="bg-[#18B1FF] text-white rounded-lg cursor-pointer"
