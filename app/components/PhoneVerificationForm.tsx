@@ -25,7 +25,7 @@ const PhoneVerificationForm = () => {
         if (cleanedPhoneNumber.length !== 10) {
           throw new Error("Phone number must be 10 digits");
         }
-        const countryCodeWithoutPlus = values.countryCode.replace("+", "");
+        const countryCodeWithoutPlus = values.countryCode;
         const fullPhoneNumber = `${countryCodeWithoutPlus}${cleanedPhoneNumber}`;
         dispatch(setPhoneNumber({ phone: fullPhoneNumber }));
         const response = await mutateAsync({ phone_number: fullPhoneNumber });

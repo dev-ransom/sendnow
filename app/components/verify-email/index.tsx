@@ -100,7 +100,7 @@ const VerifyCode = () => {
             value={otp}
             onChange={setOtp}
             inputType="password"
-            numInputs={4}
+            numInputs={6}
             renderSeparator={<span></span>}
             renderInput={(props, index) => (
               <input

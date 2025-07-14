@@ -6,10 +6,15 @@ import { LogoutResponse, ResendOtpRequest, ResendOtpResponse, SignupRequest, Sig
 import Cookies from "js-cookie";
 
 export const signUpUser = (data: SignupRequest) => {
+  const formData = new FormData();
+// Append all fields to formData
+  Object.entries(data).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
   const response = requestNew<SignupResponse>({
     url: "api/v1/users/user",
     method: "POST",
-    data,
+    data: formData,
   });
   return response;
 };
