@@ -5,72 +5,61 @@ import { useEffect, useState } from "react";
 import Header from "../Header";
 import OTPInput from "react-otp-input";
 import Button from "../Button/Button";
-import { useAppSelector, useAppDispatch } from "@/app/store/store";
+import { useAppSelector } from "@/app/store/store";
 import {
-
+  useResendOtpMutation,
   useVerifyOtpMutation,
 } from "@/app/features/auth/authService";
-
 import { toast } from "react-toastify";
 
 const VerifyCode = () => {
   const [otp, setOtp] = useState("");
   const { phoneNumber, isNewUser } = useAppSelector((state) => state.auth);
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  // const [countdown, setCountdown] = useState(30);
-  // const [otpExpired, setOtpExpired] = useState(false);
+
+  const [countdown, setCountdown] = useState(60);
 
   const { mutateAsync: verifyOtp, isPending: isVerifying } =
     useVerifyOtpMutation();
-
+  const { mutateAsync: resendOtp } = useResendOtpMutation();
   // Countdown timer for OTP expiration
-  // useEffect(() => {
-  //   if (countdown > 0) {
-  //     const timer = setTimeout(() => {
-  //       setCountdown(countdown - 1);
-  //       if (countdown - 1 === 0) {
-  //         setOtpExpired(true);
-  //       }
-  //     }, 1000);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [countdown]);
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [countdown]);
 
   const handleSubmit = async () => {
+    const response = await verifyOtp({
+      phone_number: phoneNumber!,
+      code: otp,
+    });
+
+    const {
+      tokens: { access_token },
+    } = response;
+    document.cookie = `auth-token=${access_token}; path=/; max-age=${
+      60 * 60 * 24 * 7
+    }`; // 1 week
+
+    router.push(isNewUser ? "/auth/signup" : "/chat");
+  };
+
+  const handleResentOtp = async () => {
+    if (countdown > 0) return;
     try {
-      const response = await verifyOtp({
-        phone_number: phoneNumber!,
-        code: otp,
-      });
-
-      // Store tokens securely
-      document.cookie = `auth-token=${response.tokens.access_token}; Path=/; Secure; SameSite=Lax; Max-Age=86400`;
-
-      // Use window.location instead of router to ensure middleware runs
-      router.push(isNewUser ? "/auth/signup" : "/chat");
+      await resendOtp({ phone_number: phoneNumber! });
+      setCountdown(30);
+      setOtp("");
+      toast.success("New OTP sent successfully!");
     } catch (error) {
-      // Handle actual errors
-      toast.error(
-        error instanceof Error ? error.message : "Verification failed"
-      );
+      toast.error("Failed to resend OTP. Please try again.");
     }
   };
-  // const handleResendOTP = async () => {
-  //   if (countdown > 0) return;
 
-  //   try {
-  //     await resendOtp({ phone_number: phoneNumber! });
-  //     setCountdown(30);
-  //     setOtpExpired(false);
-  //     setOtp("");
-  //     toast.success("New OTP sent successfully!");
-  //   } catch (error) {
-  //     toast.error("Failed to resend OTP. Please try again.");
-  //   }
-  // };
-
-  // Format phone number for display
   const formattedPhone = phoneNumber
     ? `${phoneNumber.slice(0, 3)} ${phoneNumber.slice(
         3,
@@ -84,13 +73,20 @@ const VerifyCode = () => {
         <div className="text-left flex flex-col lg:items-start items-center gap-4 mb-[30px]">
           <Header text="Verify OTP" textSize="text-[50px] text-nowrap" />
           <p className="text-[#797979]">
-            A 4-digit code was sent to +{formattedPhone} <br />
+            A 4-digit code was sent to {formattedPhone} <br />
             Didn't get it?{" "}
             <span
-              className={`${"text-[#18B1FF] cursor-pointer underline"}`}
-              onClick={() => {} }
+              className={`${
+                countdown === 0
+                  ? "text-[#18B1FF] cursor-pointer underline"
+                  : "text-gray-400 cursor-not-allowed"
+              }`}
+              onClick={handleResentOtp}
             >
-              Resend Code <span>30s</span>
+              Resend Code{" "}
+              {countdown > 0 && (
+                <span className="text-[#18B1FF]">{countdown}s</span>
+              )}
             </span>
           </p>
         </div>

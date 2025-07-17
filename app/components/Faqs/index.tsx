@@ -8,10 +8,10 @@ const FaqSection = () => {
         <div className="pb-[100px] text-center flex flex-col gap-9 w-[50%] mx-auto relative">
           <img
             src="/images/Rectangle.png"
-            className="size-4 left-0 top-6 absolute"
+            className="size-4 left-0 top-6 absolute lg:flex hidden"
             alt=""
           />
-          <h1 className="text-5xl font-semibold">
+          <h1 className="lg:text-5xl text-3xl font-semibold flex flex-row lg:flex-col lg:gap-0 gap-3">
             General <span className="text-[#18B1FF]">FAQs</span>
           </h1>
           <p className="text-[#0E0E0E] text-[18px]">
@@ -23,7 +23,7 @@ const FaqSection = () => {
           </p>
           <img
             src="/images/Rectangle.png"
-            className="size-4 absolute right-0 bottom-[50px]"
+            className="size-4 absolute right-0 bottom-[50px] lg:flex hidden"
             alt=""
           />
         </div>

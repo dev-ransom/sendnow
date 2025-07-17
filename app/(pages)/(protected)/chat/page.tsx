@@ -1,23 +1,15 @@
 "use client";
-import { useLogoutMutation } from "@/app/features/auth/authService";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Chat from "@/app/components/Chat";
+import { useAppSelector } from "@/app/store/store";
 
 const LogoutPage = () => {
-  const { mutate: logout, isSuccess, isError } = useLogoutMutation();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (isSuccess) {
-      router.push("auth/login");
-    }
-  }, [isSuccess, router]);
-
-
-  return <Chat />;
-
-
-}
+  const { selfData } = useAppSelector((state) => state.auth);
+  return (
+    <div className="flex">
+      <h1>{selfData?.description || 'testing'}</h1>
+      <Chat />
+    </div>
+  );
+};
 
 export default LogoutPage;

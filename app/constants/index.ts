@@ -1,3 +1,5 @@
+import { ChatSideBarItemType } from "../types/types";
+
 export const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
@@ -68,4 +70,16 @@ export const faqData = [
     question: "How can I get support if I have a problem?",
     answer: "There is a 100% refund policy."
   },
+]
+
+export const ChatSideBarItem: ChatSideBarItemType[] = [
+  { id: "menu", icon: '/images/chatMenu.png', active: true, onClick: () => console.log("Menu clicked") },
+  { id: "chats", icon: '/images/comment.png', active: false, onClick: () => console.log("chat clicked")},
+  { id: "calls", icon: '/images/call.png', active: false, onClick: () => console.log("call clicked") },
+  { id: "status", icon: '/images/status.png', active: false, onClick: () => console.log("status clicked") },
+]
+
+export const bottomSideBarItem: ChatSideBarItemType[] = [
+    { id: "starred", icon: '/images/star.png', active: false, onClick: () => console.log("star clicked") },
+    { id: "archive", icon: '/images/archive.png', active: false, onClick: () => console.log("archive clicked") }
 ]

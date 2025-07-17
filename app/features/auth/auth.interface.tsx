@@ -10,7 +10,7 @@ export interface AuthTokens {
   accessToken: string;
   refreshToken: string;
 }
-  
+
 export interface AuthUser {
   id: string;
   // Add other user fields as needed
@@ -23,6 +23,24 @@ export interface SignupResponse {
 
 export interface SignupRequest {
   phone_number: string;
+}
+
+export interface UpdatesUserAttributesRequest {
+  name: string;
+  description: string;
+  profile_picture?: File | string; // Can be either a File (for upload) or string (existing URL)
+}
+
+export interface UserData {
+  id: string;
+  name: string;
+  description: string;
+  profile_picture: string;
+}
+
+export interface UpdateUserResponse {
+  data: UserData;
+  message: string;
 }
 
 export interface ResendOtpRequest {

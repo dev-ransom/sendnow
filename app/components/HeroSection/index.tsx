@@ -74,7 +74,7 @@ const HeroSection = () => {
           <img
             src="/images/chatIcon.png"
             alt="chaticon"
-            className="size-[80px] absolute top-[80px] rotate-[-12deg] object-cover lg:right-[50%] left-[-25px]"
+            className="size-[80px] absolute top-[80px] rotate-[-12deg] object-cover lg:right-[50%] right-[85%]"
           />
           <img
             src="/images/chatIcon.png"

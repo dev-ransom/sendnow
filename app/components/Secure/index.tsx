@@ -16,7 +16,7 @@ const SecureSection = () => {
   return (
     <section className="w-full py-16 lg:py-24 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+        <div className="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-16">
           {/* Image Section */}
           <div className="w-full lg:w-1/2 flex justify-center">
             <div className="relative w-[350px] h-[500px]">

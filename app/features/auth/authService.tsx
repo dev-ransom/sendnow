@@ -2,12 +2,19 @@
 import requestNew from "@/app/utils/requestNew";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { LogoutResponse, ResendOtpRequest, ResendOtpResponse, SignupRequest, SignupResponse,  } from "./auth.interface";
 import Cookies from "js-cookie";
+import {
+  LogoutResponse,
+  ResendOtpRequest,
+  ResendOtpResponse,
+  SignupRequest,
+  SignupResponse,
+  UpdatesUserAttributesRequest,
+  UpdateUserResponse,
+} from "./auth.interface";
 
 export const signUpUser = (data: SignupRequest) => {
   const formData = new FormData();
-// Append all fields to formData
   Object.entries(data).forEach(([key, value]) => {
     formData.append(key, value);
   });
@@ -19,31 +26,43 @@ export const signUpUser = (data: SignupRequest) => {
   return response;
 };
 
+export const updatesUserAttributes = async (
+  data: UpdatesUserAttributesRequest
+) => {
+  const formData = new FormData();
+  Object.entries(data).forEach(([key, value]) => {
+    if (value !== undefined) {
+      formData.append(key, value);
+    }
+  });
+  const response = await requestNew<UpdateUserResponse>({
+    url: "api/v1/users/user",
+    method: "PATCH",
+    data: formData,
+  });
+  return response;
+};
+
 export const useSignupMutation = () => {
   return useMutation<SignupResponse, Error, SignupRequest>({
     mutationFn: signUpUser,
   });
 };
 
-export const resendOtp = async (data: ResendOtpRequest): Promise<ResendOtpResponse> => {
-  try {
-    const response = await requestNew<ResendOtpResponse>({
-      url: "api/v1/users/resend-otp",
-      method: "POST",
-      data,
-      requiresAuth: false,
-    });
+export const useUpdateUserMutation = () => {
+  return useMutation<UpdateUserResponse, Error, UpdatesUserAttributesRequest>({
+    mutationFn: updatesUserAttributes,
+  });
+};
 
-    if (!response.success) {
-      throw new Error(response.message || "Failed to resend OTP");
-    }
-
-    return response;
-  } catch (error) {
-    const errorMessage =
-      (error as { message?: string })?.message || "Failed to resend OTP";
-    throw new Error(errorMessage);
-  }
+export const resendOtp = async (data: ResendOtpRequest) => {
+  const response = await requestNew<ResendOtpResponse>({
+    url: "api/v1/users/resend-otp",
+    method: "POST",
+    data,
+    requiresAuth: false,
+  });
+  return response;
 };
 
 export const useResendOtpMutation = () => {
@@ -58,8 +77,10 @@ export const useResendOtpMutation = () => {
   });
 };
 
-
-export const verifyOtp = async (data: { phone_number: string; code: string }) => {
+export const verifyOtp = async (data: {
+  phone_number: string;
+  code: string;
+}) => {
   const response = await requestNew<{
     message: string;
     tokens: { access_token: string; refresh_token: string };
@@ -70,24 +91,15 @@ export const verifyOtp = async (data: { phone_number: string; code: string }) =>
     requiresAuth: false,
   });
 
-  if (!response.tokens?.access_token) {
-    throw new Error(response.message || "Verification failed");
-  }
-
   // Store tokens properly
-  Cookies.set('auth-token', response.tokens.access_token, { 
-    expires: 1, // 1 day
-    path: '/',
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict'
-  });
-
-  Cookies.set('refresh-token', response.tokens.refresh_token, {
-    expires: 7, // 7 days
-    path: '/',
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict'
-  });
+  localStorage.setItem(
+    "access-token",
+    JSON.stringify(response.tokens.access_token)
+  );
+  localStorage.setItem(
+    "refresh-token",
+    JSON.stringify(response.tokens.refresh_token)
+  );
 
   return response;
 };
@@ -104,20 +116,19 @@ export const useVerifyOtpMutation = () => {
   });
 };
 
-// features/auth/authService.ts
-
 
 // features/auth/authService.ts
 export const logoutUser = async (): Promise<LogoutResponse> => {
-  const refreshToken = Cookies.get('refresh-token');
-  
-  if (!refreshToken) {
-    throw new Error('No active session found');
-  }
+  const refreshToken = JSON.parse(
+    localStorage.getItem("refresh-token") ?? "null"
+  ) as string;
 
+  if (!refreshToken) {
+    throw new Error("No active session found");
+  }
   const response = await requestNew<LogoutResponse>({
-    url: 'api/v1/users/logout',
-    method: 'POST',
+    url: "api/v1/users/logout",
+    method: "POST",
     data: { refresh_token: refreshToken },
   });
 
@@ -129,18 +140,18 @@ export const useLogoutMutation = () => {
     mutationFn: logoutUser,
     onSuccess: () => {
       // Clear all auth-related cookies and storage
-      Cookies.remove('auth-token', { path: '/' });
-      Cookies.remove('refresh-token', { path: '/' });
-      localStorage.removeItem('signup_phone');
-      
-      // Redirect to login
-      window.location.href = '/auth/login';
+      localStorage.removeItem("access-token");
+      localStorage.removeItem("refresh-token");
+      localStorage.removeItem("signup_phone");
+      Cookies.remove('auth-token')
     },
     onError: (error: Error) => {
       toast.error(error.message || "Logout failed");
       // Force cleanup anyway
-      Cookies.remove('auth-token', { path: '/' });
-      Cookies.remove('refresh-token', { path: '/' });
+      localStorage.removeItem("access-token");
+      localStorage.removeItem("refresh-token");
+      localStorage.removeItem('auth-token')
+      Cookies.remove("auth-token");
     },
   });
 };

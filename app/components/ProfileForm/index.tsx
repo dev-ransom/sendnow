@@ -1,24 +1,28 @@
-'use client'
+"use client";
+import { useUpdateUserMutation } from "@/app/features/auth/authService";
+import { updateSchema } from "@/validationSchemas";
 import { useFormik } from "formik";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import * as Yup from "yup";
 
 const ProfileForm = () => {
+  const router = useRouter();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-
+  const { mutateAsync: createNewUser } = useUpdateUserMutation();
   const formik = useFormik({
     initialValues: {
       name: "",
       description: "",
       image: null as File | null,
     },
-    validationSchema: Yup.object({
-      name: Yup.string().required("Name is required"),
-      description: Yup.string().required("Description is required"),
-      image: Yup.mixed().required("Image is required"),
-    }),
+    validationSchema: updateSchema,
     onSubmit: (values) => {
-      // Handle form submission
+      createNewUser({
+        name: values.name,
+        description: values.description,
+        profile_picture: values.image as File,
+      });
+      router.push("/chat");
       console.log("Form submitted:", values);
       // You would typically send this data to your API here
     },
@@ -124,8 +128,13 @@ const ProfileForm = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          disabled={formik.isSubmitting}
-          className="w-full bg-[#18B1FF] text-white py-2 px-4 rounded-md hover:bg-[#18b2fff1] focus:outline-none focus:ring-2 focus:ring-[#18b2fff0] focus:ring-offset-2 disabled:opacity-50"
+          disabled={
+            formik.isSubmitting ||
+            !formik.values.name ||
+            !formik.values.description ||
+            !formik.values.image
+          }
+          className="w-full bg-[#18B1FF] cursor-pointer text-white py-2 px-4 rounded-md hover:bg-[#18b2fff1] focus:outline-none focus:ring-2 focus:ring-[#18b2fff0] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-no-drop"
         >
           Continue
         </button>

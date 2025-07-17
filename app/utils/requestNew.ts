@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
 async function requestNew<T>(options: Record<string, unknown>): Promise<T> {
-  const accessToken = JSON.parse(localStorage.getItem('token') ?? 'null') as string;
+  const accessToken = JSON.parse(localStorage.getItem('access-token') ?? 'null') as string;
 
   const headers = accessToken
     ? {
@@ -14,20 +14,16 @@ async function requestNew<T>(options: Record<string, unknown>): Promise<T> {
     headers
   });
 
-  // request handler
   const onSuccess = (response: AxiosResponse<T>) => {
     const { data } = response;
     return data;
   };
 
-  // error handler
   function onError(error: AxiosError) {
     return Promise.reject(error.response);
   }
 
-  const response = client(options).then(onSuccess).catch(onError);
-  // adding success and error handlers to client
-  return response;
+  return client(options).then(onSuccess).catch(onError);
 }
 
 export default requestNew;
