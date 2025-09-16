@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import { useSignupMutation } from "../features/auth/authService";
 import { useAppDispatch } from "../store/store";
-import { setIsNewUser, setPhoneNumber } from "../features/auth/authSlice";
+import { setPhoneNumber } from "../features/auth/authSlice";
 import { signupSchema } from "@/validationSchemas";
 
 const PhoneVerificationForm = () => {
@@ -28,8 +28,7 @@ const PhoneVerificationForm = () => {
         const countryCodeWithoutPlus = values.countryCode;
         const fullPhoneNumber = `${countryCodeWithoutPlus}${cleanedPhoneNumber}`;
         dispatch(setPhoneNumber({ phone: fullPhoneNumber }));
-        const response = await mutateAsync({ phone_number: fullPhoneNumber });
-        dispatch(setIsNewUser(response.new_user));
+        await mutateAsync({ phone_number: fullPhoneNumber });
         router.push("/auth/verify-email");
       } catch (error) {}
     },

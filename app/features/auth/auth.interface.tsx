@@ -1,9 +1,10 @@
-export interface VerifyOTPResponse {
+export interface VerifyOtpResponse {
   message: string;
   tokens: {
     access_token: string;
     refresh_token: string;
   };
+  new_user: boolean;
 }
 
 export interface AuthTokens {
@@ -18,7 +19,7 @@ export interface AuthUser {
 
 export interface SignupResponse {
   message: string;
-  new_user: boolean;
+  
 }
 
 export interface SignupRequest {
@@ -57,10 +58,6 @@ export interface VerifyOtpRequest {
   code: string;
 }
 
-export interface VerifyOtpResponse {
-  success: boolean;
-  message: string;
-}
 
 export interface LogoutResponse {
   message: string;

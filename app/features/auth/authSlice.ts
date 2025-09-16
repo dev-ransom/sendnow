@@ -1,6 +1,6 @@
 // src/features/auth/authSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UpdateUserResponse, UserData } from './auth.interface';
+import { UserData } from './auth.interface';
 
 interface AuthState {
   phoneNumber: string | null;

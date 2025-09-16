@@ -5,18 +5,19 @@ import { useEffect, useState } from "react";
 import Header from "../Header";
 import OTPInput from "react-otp-input";
 import Button from "../Button/Button";
-import { useAppSelector } from "@/app/store/store";
+import { useAppDispatch, useAppSelector } from "@/app/store/store";
 import {
   useResendOtpMutation,
   useVerifyOtpMutation,
 } from "@/app/features/auth/authService";
 import { toast } from "react-toastify";
+import { setIsNewUser } from "@/app/features/auth/authSlice";
 
 const VerifyCode = () => {
   const [otp, setOtp] = useState("");
   const { phoneNumber, isNewUser } = useAppSelector((state) => state.auth);
   const router = useRouter();
-
+  const dispatch = useAppDispatch();
   const [countdown, setCountdown] = useState(60);
 
   const { mutateAsync: verifyOtp, isPending: isVerifying } =
@@ -37,7 +38,7 @@ const VerifyCode = () => {
       phone_number: phoneNumber!,
       code: otp,
     });
-
+    dispatch(setIsNewUser(response.new_user as boolean));
     const {
       tokens: { access_token },
     } = response;

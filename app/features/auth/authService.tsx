@@ -11,6 +11,8 @@ import {
   SignupResponse,
   UpdatesUserAttributesRequest,
   UpdateUserResponse,
+  VerifyOtpRequest,
+  VerifyOtpResponse,
 } from "./auth.interface";
 
 export const signUpUser = (data: SignupRequest) => {
@@ -19,7 +21,7 @@ export const signUpUser = (data: SignupRequest) => {
     formData.append(key, value);
   });
   const response = requestNew<SignupResponse>({
-    url: "api/v1/users/user",
+    url: "api/v1/users/auth/verify-phone",
     method: "POST",
     data: formData,
   });
@@ -57,7 +59,7 @@ export const useUpdateUserMutation = () => {
 
 export const resendOtp = async (data: ResendOtpRequest) => {
   const response = await requestNew<ResendOtpResponse>({
-    url: "api/v1/users/resend-otp",
+    url: "api/v1/users/auth/resend-otp",
     method: "POST",
     data,
     requiresAuth: false,
@@ -77,15 +79,9 @@ export const useResendOtpMutation = () => {
   });
 };
 
-export const verifyOtp = async (data: {
-  phone_number: string;
-  code: string;
-}) => {
-  const response = await requestNew<{
-    message: string;
-    tokens: { access_token: string; refresh_token: string };
-  }>({
-    url: "api/v1/users/verify-otp",
+export const verifyOtp = async (data: VerifyOtpRequest) => {
+  const response = await requestNew<VerifyOtpResponse>({
+    url: "api/v1/users/auth/verify-otp",
     method: "POST",
     data,
     requiresAuth: false,
@@ -105,17 +101,10 @@ export const verifyOtp = async (data: {
 };
 
 export const useVerifyOtpMutation = () => {
-  return useMutation({
+  return useMutation<VerifyOtpResponse, Error, VerifyOtpRequest>({
     mutationFn: verifyOtp,
-    onSuccess: () => {
-      toast.success("Verification successful!");
-    },
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
   });
 };
-
 
 // features/auth/authService.ts
 export const logoutUser = async (): Promise<LogoutResponse> => {
@@ -143,14 +132,14 @@ export const useLogoutMutation = () => {
       localStorage.removeItem("access-token");
       localStorage.removeItem("refresh-token");
       localStorage.removeItem("signup_phone");
-      Cookies.remove('auth-token')
+      Cookies.remove("auth-token");
     },
     onError: (error: Error) => {
       toast.error(error.message || "Logout failed");
       // Force cleanup anyway
       localStorage.removeItem("access-token");
       localStorage.removeItem("refresh-token");
-      localStorage.removeItem('auth-token')
+      localStorage.removeItem("auth-token");
       Cookies.remove("auth-token");
     },
   });
